@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7 Years With Kanna 🤍</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            background-color: #fff0f3;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        /* Left Side: Vibrant 7 */
+        .left-side {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .number-seven {
+            font-size: 85vh;
+            font-weight: 900;
+            color: #ff1e56;
+            opacity: 0.45;
+            user-select: none;
+        }
+
+        /* Right Side: Massive Red Heart */
+        .right-side {
+            flex: 1.2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        #heart-box {
+            width: 750px;
+            height: 750px;
+            background: #ff1e56; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            clip-path: path('M375,700 C375,700 750,500 750,250 C750,110 600,0 450,0 C375,0 375,80 375,80 C375,80 375,0 300,0 C150,0 0,110 0,250 C0,500 375,700 375,700 Z');
+            box-shadow: 0 20px 80px rgba(255, 30, 86, 0.5);
+        }
+
+        h2 { 
+            color: white; 
+            font-size: 3.8rem; 
+            margin-bottom: 50px; 
+            font-weight: 900;
+            text-align: center;
+            padding: 0 70px;
+            z-index: 10;
+        }
+
+        /* Button Container */
+        .btn-container { 
+            display: flex; 
+            gap: 60px; 
+            height: 350px; 
+            width: 80%;
+            justify-content: center; 
+            align-items: center;
+            position: relative;
+        }
+
+        .button {
+            width: 150px;
+            height: 150px;
+            background: white;
+            color: #ff1e56;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.7rem;
+            clip-path: path('M75,140 C75,140 150,100 150,55 C150,25 120,0 90,0 C75,0 75,20 75,20 C75,20 75,0 60,0 C30,0 0,25 0,55 C0,100 75,140 75,140 Z');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .no-btn { background: #ffd1dc; }
+
+        /* Shower Emojis */
+        .falling-heart {
+            position: absolute;
+            top: -100px;
+            font-size: 60px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        /* Background Emojis */
+        .bg-emoji {
+            position: absolute;
+            bottom: -100px;
+            font-size: 55px; 
+            z-index: 0;
+            opacity: 0.7;
+            animation: floatUp 7s linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(120vh) rotate(360deg); }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-130vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Updated Final Message Area */
+        .final-msg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            display: none; /* Controlled by JS */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            padding: 100px 0;
+            z-index: 2000;
+            box-shadow: 0 0 100px rgba(0,0,0,0.2);
+        }
+
+        .final-line-1 {
+            font-size: 5rem;
+            color: #ff1e56;
+            font-weight: 900;
+            margin-bottom: 25px; /* Increased margin to separate lines */
+            text-align: center;
+            /* Added glow behind Line 1 */
+            text-shadow: 
+                0 0 15px rgba(100, 255, 218, 0.7), 
+                0 0 30px rgba(100, 255, 218, 0.5), 
+                0 0 50px rgba(100, 255, 218, 0.3);
+        }
+
+        .final-line-2 {
+            font-size: 2.8rem; /* Made second line significantly smaller (from 4rem) */
+            color: #ff1e56;
+            font-weight: 900;
+            text-align: center;
+            opacity: 0.95;
+            /* Added glow behind Line 2 */
+            text-shadow: 
+                0 0 10px rgba(100, 255, 218, 0.7), 
+                0 0 20px rgba(100, 255, 218, 0.5), 
+                0 0 40px rgba(100, 255, 218, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-side">
+        <div class="number-seven">7</div>
+    </div>
+
+    <div class="right-side">
+        <div id="heart-box">
+            <h2 id="question">Do you love me ?</h2>
+            <div class="btn-container" id="btn-area">
+                <button class="button" id="yes-btn" onclick="triggerShower(); nextStep(2)">Yes</button>
+                <button class="button no-btn" id="no" onmouseover="flee()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="final-line" class="final-msg">
+        <div class="final-line-1">Happy 7th year Anniversary Kanna 🤍❤️</div>
+        <div class="final-line-2">Be My Forever ♾️</div>
+    </div>
+
+    <script>
+        // 1. MASSIVE BACKGROUND FLOW
+        function spawnBg() {
+            const list = ['❤️', '💍', '🌹', '💖', '✨', '💐', '♾️'];
+            const e = document.createElement('div');
+            e.className = 'bg-emoji';
+            e.innerText = list[Math.floor(Math.random() * list.length)];
+            e.style.left = Math.random() * 100 + 'vw';
+            document.body.appendChild(e);
+            setTimeout(() => e.remove(), 7000);
+        }
+        setInterval(spawnBg, 120);
+
+        // 2. BIGGER SHOWER
+        function triggerShower() {
+            for(let i=0; i<40; i++) {
+                setTimeout(() => {
+                    const h = document.createElement('div');
+                    h.className = 'falling-heart';
+                    const icons = ['❤️', '🌹', '💖', '💗', '♾️'];
+                    h.innerText = icons[Math.floor(Math.random() * icons.length)];
+                    h.style.left = Math.random() * 100 + 'vw';
+                    h.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                    document.body.appendChild(h);
+                    setTimeout(() => h.remove(), 4000);
+                }, i * 60);
+            }
+        }
+
+        // 3. SMART FLEEING (Jumps to all corners of the Heart Area)
+        function flee() {
+            const btn = document.getElementById('no');
+            const rangeX = 280; 
+            const rangeY = 220; 
+            const x = (Math.random() - 0.5) * rangeX * 2;
+            const y = (Math.random() - 0.5) * rangeY * 2;
+            
+            btn.style.position = 'absolute';
+            btn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function nextStep(step) {
+            const q = document.getElementById('question');
+            const area = document.getElementById('btn-area');
+            
+            if (step === 2) {
+                q.innerText = "Did you ever hate me?";
+                area.innerHTML = `
+                    <button class="button no-btn" onmouseover="flee()" id="no">Yes</button>
+                    <button class="button" id="yes-btn" onclick="triggerShower(); nextStep(3)">No</button>
+                `;
+            } else if (step === 3) {
+                q.innerText = "Will you marry me?";
+                area.innerHTML = `
+                    <button class="button" id="yes-btn" onclick="celebrate()">Yes</button>
+                    <button class="button no-btn" onmouseover="flee()" id="no">No</button>
+                `;
+            }
+        }
+
+        function celebrate() {
+            document.getElementById('heart-box').style.display = 'none';
+            document.querySelector('.left-side').style.display = 'none';
+            document.getElementById('final-line').style.display = 'flex'; // Display Flex to center lines
+            
+            setInterval(() => {
+                const h = document.createElement('div');
+                h.className = 'falling-heart';
+                h.innerText = ['❤️', '💍', '🌹', '💖', '♾️'][Math.floor(Math.random()*5)];
+                h.style.left = Math.random() * 100 + 'vw';
+                h.style.fontSize = '85px'; 
+                h.style.animationDuration = '2s'; 
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 2500);
+            }, 60);
+        }
+    </script>
+</body>
+</html>
